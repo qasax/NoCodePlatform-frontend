@@ -1,0 +1,535 @@
+/* ================================================================
+   AI ZERO-CODE PLATFORM — Design System v2
+   Theme Codename: "Crystal Grid"
+   Style: Glassmorphism · Low-saturation · Modular · Spatial
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+/* ——— Design Tokens ——— */
+:root {
+  /* Brand */
+  --c-primary: #4f6ef2;
+  --c-primary-hov: #3d5ce8;
+  --c-primary-soft: rgba(79, 110, 242, 0.1);
+  --c-accent: #c8a96e; /* warm gold accent */
+  --c-danger: #e05c6b;
+  --c-success: #3dbd87;
+  --c-warning: #e9a23b;
+
+  /* Neutrals — light scale */
+  --c-bg: #eef0f6; /* page background */
+  --c-bg-deep: #e3e6ef;
+  --c-surf-0: rgba(255, 255, 255, 0.2); /* ultra-transparent */
+  --c-surf-1: rgba(255, 255, 255, 0.55); /* glass panels */
+  --c-surf-2: rgba(255, 255, 255, 0.78); /* modal / card */
+  --c-surf-3: rgba(255, 255, 255, 0.95); /* solid-ish */
+  --c-surf-inv: rgba(18, 22, 45, 0.88); /* dark inverse */
+
+  /* Text */
+  --c-text-1: #0d1226;
+  --c-text-2: #4a5270;
+  --c-text-3: #9099b5;
+  --c-text-inv: #f5f7ff;
+
+  /* Borders / shadows */
+  --c-border: rgba(79, 110, 242, 0.1);
+  --c-border-s: rgba(255, 255, 255, 0.6);
+  --shadow-glass: 0 8px 32px rgba(79, 110, 242, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 24px 64px rgba(79, 110, 242, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-btn: 0 4px 16px rgba(79, 110, 242, 0.3);
+
+  /* Spacing & Radius */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 30px;
+  --r-full: 9999px;
+
+  /* Legacy aliases */
+  --primary-color: var(--c-primary);
+  --bg-body: var(--c-bg);
+  --bg-surface: var(--c-surf-2);
+  --text-primary: var(--c-text-1);
+  --text-secondary: var(--c-text-2);
+  --text-tertiary: var(--c-text-3);
+  --border-color: var(--c-border);
+}
+
+/* ——— Reset ——— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family:
+    'Plus Jakarta Sans',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--c-bg);
+  color: var(--c-text-1);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  /* Subtle mesh gradient background */
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(79, 110, 242, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(200, 169, 110, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(61, 189, 135, 0.06) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:where(a, button, input, textarea, select, [role='button']):focus-visible {
+  outline: 2px solid rgba(79, 110, 242, 0.55);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 720px) {
+  body .home-page {
+    padding: 40px 16px 64px;
+  }
+  body .hero {
+    margin-bottom: 36px;
+  }
+  body .hero-title {
+    font-size: clamp(36px, 10vw, 56px);
+    letter-spacing: -1.4px;
+  }
+  body .prompt-shell {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+  body .prompt-send {
+    width: 100%;
+    justify-content: center;
+  }
+  body .app-grid {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  body .tabs-pill {
+    width: 100%;
+  }
+  body .tab-btn {
+    flex: 1;
+    justify-content: center;
+  }
+  body .atz-header {
+    align-items: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-panel,
+  :root .ant-card,
+  :root .ant-modal-content,
+  .prompt-shell,
+  .app-card,
+  .detail-glass,
+  .search-glass,
+  .table-glass {
+    background: rgba(255, 255, 255, 0.94) !important;
+  }
+}
+
+/* ——— Ant Design overrides: Light Glass Theme ——— */
+
+/* Layout */
+:root .ant-layout,
+:root .ant-layout-content,
+:root .ant-layout-header,
+:root .ant-layout-footer {
+  background: transparent !important;
+}
+
+/* Card */
+:root .ant-card {
+  background: var(--c-surf-2) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--c-border-s) !important;
+  border-radius: var(--r-lg) !important;
+  box-shadow: var(--shadow-glass) !important;
+  color: var(--c-text-1) !important;
+}
+:root .ant-card-head {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(79, 110, 242, 0.08) !important;
+}
+:root .ant-card-head-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  color: var(--c-text-1) !important;
+}
+
+/* Table */
+:root .ant-table {
+  background: transparent !important;
+  color: var(--c-text-1) !important;
+}
+:root .ant-table-thead > tr > th {
+  background: rgba(79, 110, 242, 0.04) !important;
+  color: var(--c-text-3) !important;
+  border-bottom: 1px solid rgba(79, 110, 242, 0.1) !important;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+:root .ant-table-tbody > tr > td {
+  background: transparent !important;
+  color: var(--c-text-1) !important;
+  border-bottom: 1px solid rgba(79, 110, 242, 0.06) !important;
+}
+:root .ant-table-tbody > tr:hover > td {
+  background: rgba(79, 110, 242, 0.04) !important;
+}
+:root .ant-table-wrapper .ant-spin-container {
+  background: transparent !important;
+}
+
+/* Inputs */
+:root .ant-input,
+:root .ant-input-affix-wrapper,
+:root .ant-input-number,
+:root .ant-input-password {
+  background: var(--c-surf-3) !important;
+  border: 1px solid rgba(79, 110, 242, 0.15) !important;
+  color: var(--c-text-1) !important;
+  border-radius: var(--r-sm) !important;
+  box-shadow: none !important;
+}
+:root .ant-input:focus,
+:root .ant-input-focused,
+:root .ant-input-affix-wrapper-focused {
+  border-color: var(--c-primary) !important;
+  box-shadow: 0 0 0 3px var(--c-primary-soft) !important;
+}
+:root .ant-input::placeholder {
+  color: var(--c-text-3) !important;
+}
+:root .ant-input-prefix {
+  color: var(--c-text-3) !important;
+}
+
+/* Select */
+:root .ant-select .ant-select-selector {
+  background: var(--c-surf-3) !important;
+  border: 1px solid rgba(79, 110, 242, 0.15) !important;
+  color: var(--c-text-1) !important;
+  border-radius: var(--r-sm) !important;
+}
+:root .ant-select-focused .ant-select-selector {
+  border-color: var(--c-primary) !important;
+  box-shadow: 0 0 0 3px var(--c-primary-soft) !important;
+}
+:root .ant-select-dropdown {
+  background: var(--c-surf-2) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid var(--c-border-s) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+:root .ant-select-item {
+  color: var(--c-text-1) !important;
+}
+:root .ant-select-item-option-active,
+:root .ant-select-item-option-selected {
+  background: var(--c-primary-soft) !important;
+  color: var(--c-primary) !important;
+}
+
+/* Buttons */
+:root .ant-btn-primary {
+  background: var(--c-primary) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: var(--r-sm) !important;
+  font-weight: 600 !important;
+  box-shadow: var(--shadow-btn) !important;
+  transition: all 0.22s ease !important;
+}
+:root .ant-btn-primary:hover {
+  background: var(--c-primary-hov) !important;
+  box-shadow: 0 6px 22px rgba(79, 110, 242, 0.4) !important;
+  transform: translateY(-1px);
+}
+:root .ant-btn-default {
+  background: var(--c-surf-2) !important;
+  border: 1px solid var(--c-border) !important;
+  border-radius: var(--r-sm) !important;
+  color: var(--c-text-2) !important;
+  backdrop-filter: blur(8px) !important;
+}
+:root .ant-btn-default:hover {
+  border-color: var(--c-primary) !important;
+  color: var(--c-primary) !important;
+}
+:root .ant-btn-text {
+  color: var(--c-text-2) !important;
+}
+:root .ant-btn-text:hover {
+  color: var(--c-primary) !important;
+  background: var(--c-primary-soft) !important;
+}
+
+/* Modal */
+:root .ant-modal-content {
+  background: rgba(245, 247, 255, 0.92) !important;
+  backdrop-filter: blur(32px) !important;
+  -webkit-backdrop-filter: blur(32px) !important;
+  border: 1px solid var(--c-border-s) !important;
+  border-radius: var(--r-xl) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+:root .ant-modal-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(79, 110, 242, 0.08) !important;
+  border-radius: var(--r-xl) var(--r-xl) 0 0 !important;
+}
+:root .ant-modal-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+  color: var(--c-text-1) !important;
+}
+:root .ant-modal-close-x {
+  color: var(--c-text-3) !important;
+}
+:root .ant-modal-footer {
+  border-top: 1px solid rgba(79, 110, 242, 0.08) !important;
+}
+
+/* Tabs */
+:root .ant-tabs-nav::before {
+  border-bottom: 1px solid rgba(79, 110, 242, 0.1) !important;
+}
+:root .ant-tabs-tab {
+  color: var(--c-text-3) !important;
+  font-weight: 500;
+}
+:root .ant-tabs-tab:hover {
+  color: var(--c-primary) !important;
+}
+:root .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--c-primary) !important;
+  font-weight: 700;
+}
+:root .ant-tabs-ink-bar {
+  background: var(--c-primary) !important;
+  border-radius: 2px;
+}
+
+/* Form labels */
+:root .ant-form-item-label > label {
+  color: var(--c-text-2) !important;
+  font-size: 13px;
+  font-weight: 600;
+}
+:root .ant-form-item-explain-error {
+  font-size: 12px;
+}
+
+/* Alert */
+:root .ant-alert-info {
+  background: rgba(79, 110, 242, 0.07) !important;
+  border: 1px solid rgba(79, 110, 242, 0.18) !important;
+  border-radius: var(--r-md) !important;
+}
+:root .ant-alert-message {
+  color: var(--c-text-1) !important;
+  font-weight: 600;
+}
+:root .ant-alert-description {
+  color: var(--c-text-2) !important;
+}
+:root .ant-alert-close-icon {
+  color: var(--c-text-3) !important;
+}
+
+/* Dropdown */
+:root .ant-dropdown-menu {
+  background: var(--c-surf-2) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid var(--c-border-s) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 6px !important;
+}
+:root .ant-dropdown-menu-item {
+  color: var(--c-text-1) !important;
+  border-radius: var(--r-sm) !important;
+  margin: 2px 0 !important;
+}
+:root .ant-dropdown-menu-item:hover {
+  background: var(--c-primary-soft) !important;
+}
+
+/* Popover / Popconfirm */
+:root .ant-popover-inner {
+  background: var(--c-surf-2) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--c-border-s) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+:root .ant-popover-title {
+  color: var(--c-text-1) !important;
+  font-weight: 700 !important;
+  border-bottom-color: rgba(79, 110, 242, 0.08) !important;
+}
+:root .ant-popover-inner-content {
+  color: var(--c-text-2) !important;
+}
+:root .ant-tooltip-inner {
+  background: var(--c-surf-inv) !important;
+  border-radius: var(--r-sm) !important;
+  font-size: 12px;
+}
+
+/* Pagination */
+:root .ant-pagination-item {
+  background: var(--c-surf-2) !important;
+  border: 1px solid rgba(79, 110, 242, 0.12) !important;
+  border-radius: var(--r-xs) !important;
+  backdrop-filter: blur(8px) !important;
+}
+:root .ant-pagination-item a {
+  color: var(--c-text-2) !important;
+}
+:root .ant-pagination-item-active {
+  background: var(--c-primary-soft) !important;
+  border-color: var(--c-primary) !important;
+}
+:root .ant-pagination-item-active a {
+  color: var(--c-primary) !important;
+}
+:root .ant-pagination-prev button,
+:root .ant-pagination-next button {
+  background: var(--c-surf-2) !important;
+  border: 1px solid rgba(79, 110, 242, 0.12) !important;
+  color: var(--c-text-2) !important;
+  border-radius: var(--r-xs) !important;
+}
+
+/* Avatar */
+:root .ant-avatar {
+  border: 2px solid rgba(79, 110, 242, 0.2) !important;
+}
+
+/* Spin */
+:root .ant-spin-dot-item {
+  background: var(--c-primary) !important;
+}
+
+/* Descriptions */
+:root .ant-descriptions-item-label {
+  background: rgba(79, 110, 242, 0.04) !important;
+  color: var(--c-text-3) !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+:root .ant-descriptions-item-content {
+  background: transparent !important;
+  color: var(--c-text-1) !important;
+}
+:root .ant-descriptions-bordered .ant-descriptions-view {
+  border-color: rgba(79, 110, 242, 0.1) !important;
+  border-radius: var(--r-md) !important;
+  overflow: hidden;
+}
+:root .ant-descriptions-bordered .ant-descriptions-row {
+  border-bottom-color: rgba(79, 110, 242, 0.08) !important;
+}
+
+/* Input Search addon */
+:root .ant-input-search .ant-input-group-addon .ant-btn {
+  background: var(--c-primary) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+/* TextArea */
+:root .ant-input[type='textarea'],
+:root textarea.ant-input {
+  background: var(--c-surf-3) !important;
+  border-color: rgba(79, 110, 242, 0.15) !important;
+  color: var(--c-text-1) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* ——— Utility classes ——— */
+.glass-panel {
+  background: var(--c-surf-1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--c-border-s);
+  box-shadow: var(--shadow-glass);
+}
+
+/* ——— Scrollbar ——— */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(79, 110, 242, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 110, 242, 0.4);
+}
+
+/* ——— Selection ——— */
+::selection {
+  background: rgba(79, 110, 242, 0.2);
+  color: var(--c-text-1);
+}
