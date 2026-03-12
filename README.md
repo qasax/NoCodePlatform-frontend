@@ -1,13 +1,13 @@
-# NoCodePlatform-frontend
+# 无代码平台前端
 
-面向「无代码 AI 应用平台」的前端项目，基于 Vue 3 + Vite + TypeScript，内置多布局、路由权限、全局状态、统一 API 层与可视化编辑辅助能力。
+本项目是「无代码 AI 应用平台」的前端工程，基于 Vue 3 + Vite + TypeScript，内置多布局、路由权限、全局状态、统一 API 层与可视化编辑辅助能力。
 
 **界面预览**
 
-![Login](./login_crystal.png)
-![Home](./home_crystal.png)
-![App Manage](./appmanage_crystal.png)
-![Current Login](./current_login.png)
+![登录页](./login_crystal.png)
+![首页](./home_crystal.png)
+![应用管理](./appmanage_crystal.png)
+![当前登录](./current_login.png)
 
 **技术栈**
 
@@ -21,42 +21,41 @@
 
 ```mermaid
 flowchart LR
-  U[User] -->|Browser| V[Vue App]
-  V --> R[Router]
-  R --> L1[UserLayout]
-  R --> L2[BasicLayout]
-  R --> L3[ChatLayout]
-  L1 --> Vw1[User Views]
-  L2 --> Vw2[App/Admin Views]
-  L3 --> Vw3[Generation View]
-  V --> S[Pinia Store]
-  V --> A[API Layer]
-  A --> X[Axios Instance]
-  X --> B[(Backend /api)]
-  V --> C[Components]
-  V --> VE[Visual Editor
-  composable]
+  用户 -->|浏览器| 前端应用
+  前端应用 --> 路由
+  路由 --> 用户布局
+  路由 --> 基础布局
+  路由 --> 对话布局
+  用户布局 --> 用户页面
+  基础布局 --> 应用与管理页面
+  对话布局 --> 应用生成页面
+  前端应用 --> 全局状态
+  前端应用 --> 接口层
+  接口层 --> Axios实例
+  Axios实例 --> 后端接口
+  前端应用 --> 通用组件
+  前端应用 --> 可视化编辑能力
 ```
 
 **运行时流程**
 
 ```mermaid
 sequenceDiagram
-  participant Browser
-  participant Router
-  participant Store
-  participant View
-  participant API
-  participant Backend
+  participant 浏览器
+  participant 路由
+  participant 状态
+  participant 页面
+  participant 接口层
+  participant 后端
 
-  Browser->>Router: 进入路由
-  Router->>Store: 首次进入拉取登录信息
-  Store-->>Router: 登录态与角色
-  Router->>View: 渲染对应 Layout + View
-  View->>API: 调用业务接口
-  API->>Backend: /api 请求
-  Backend-->>API: 返回数据
-  API-->>View: 统一解析与错误处理
+  浏览器->>路由: 进入路由
+  路由->>状态: 首次进入拉取登录信息
+  状态-->>路由: 登录态与角色
+  路由->>页面: 渲染对应布局与页面
+  页面->>接口层: 调用业务接口
+  接口层->>后端: /api 请求
+  后端-->>接口层: 返回数据
+  接口层-->>页面: 统一解析与错误处理
 ```
 
 **目录结构**
@@ -65,7 +64,7 @@ sequenceDiagram
 .
 ├─ public/                 静态资源
 ├─ src/
-│  ├─ api/                 业务 API 聚合与类型
+│  ├─ api/                 业务接口聚合与类型
 │  ├─ assets/              全局样式与静态资源
 │  ├─ components/          通用组件
 │  ├─ composables/         组合式能力（如可视化编辑）
@@ -103,11 +102,11 @@ sequenceDiagram
 
 - `src/stores/useLoginUserStore.ts` 管理登录用户信息与首次拉取状态。
 
-**5) API 层与请求规范**
+**5) 接口层与请求规范**
 
 - `src/request.ts` 统一 Axios 实例，内置超时、`withCredentials`、响应与错误处理。
 - 使用 `json-bigint` 避免后端返回大整数精度丢失。
-- `src/api/*` 为后端接口分组与类型定义。
+- `src/api/` 下按业务划分接口与类型定义。
 
 **6) 可视化编辑能力**
 
@@ -118,13 +117,13 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-  App[App.vue] --> Layout{Layout Switch}
-  Layout -->|/user/*| UserLayout
-  Layout -->|/app/gen/*| ChatLayout
-  Layout -->|others| BasicLayout
-  UserLayout --> UserViews
-  ChatLayout --> GenView
-  BasicLayout --> AppViews
+  根组件 --> 布局切换
+  布局切换 -->|/user/*| 用户布局
+  布局切换 -->|/app/gen/*| 对话布局
+  布局切换 -->|其他| 基础布局
+  用户布局 --> 用户页面
+  对话布局 --> 生成页面
+  基础布局 --> 应用页面
 ```
 
 **开发与构建**
