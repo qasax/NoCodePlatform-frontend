@@ -139,7 +139,7 @@ import defaultAppCover from '@/assets/default_cover.png'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons-vue'
-import { listAppVoByPage, addApp, updateApp, deleteApp } from '@/api/yingyongguanli'
+import { listMyAppVoByPage, addApp, updateApp, deleteApp } from '@/api/yingyongguanli'
 import type { TableProps } from 'ant-design-vue'
 
 const router = useRouter()
@@ -172,7 +172,7 @@ const loadData = async () => {
   loading.value = true
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res: any = await listAppVoByPage(searchParams)
+    const res: any = await listMyAppVoByPage(searchParams)
     if (res) {
       dataList.value = res.records || []
       total.value = res.totalRow || 0
@@ -472,5 +472,34 @@ onMounted(() => loadData())
 }
 .tbl-btn.danger:hover {
   background: rgba(224, 92, 107, 0.1);
+}
+
+/* 移除输入框边框 */
+.search-glass :deep(.ant-input) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.search-glass :deep(.ant-input:focus) {
+  border: none !important;
+  box-shadow: none !important;
+}
+:deep(.ant-input-number) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+:deep(.ant-input-number:focus) {
+  border: none !important;
+  box-shadow: none !important;
+}
+:deep(.ant-textarea) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+:deep(.ant-textarea:focus) {
+  border: none !important;
+  box-shadow: none !important;
 }
 </style>

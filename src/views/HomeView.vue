@@ -147,6 +147,9 @@
             </div>
           </div>
         </a-spin>
+        <div v-if="myAppList.length > 0" class="debug-info">
+          <small>调试信息: 当前标签页={{ activeTab }}, 应用数量={{ myAppList.length }}, 总数={{ myAppTotal }}</small>
+        </div>
         <a-pagination
           v-if="myAppTotal > (mySearchParams.pageSize || 8)"
           :current="mySearchParams.pageNum"
@@ -169,7 +172,7 @@
               v-for="item in featuredAppList"
               :key="item.id"
               class="app-card clickable"
-              @click="goDetail(item.id)"
+              @click="openFeaturedApp(item)"
             >
               <div class="acard-cover">
                 <img
@@ -189,6 +192,9 @@
             </div>
           </div>
         </a-spin>
+        <div v-if="featuredAppList.length > 0" class="debug-info">
+          <small>调试信息: 当前标签页={{ activeTab }}, 应用数量={{ featuredAppList.length }}, 总数={{ featuredAppTotal }}</small>
+        </div>
         <a-pagination
           v-if="featuredAppTotal > (featuredSearchParams.pageSize || 8)"
           :current="featuredSearchParams.pageNum"
@@ -270,14 +276,18 @@ const mySearchParams = reactive<API.AppQueryRequest>({ pageNum: 1, pageSize: 8, 
 const loadMyApps = async () => {
   loadingMy.value = true
   try {
+    console.log('正在加载我的应用，查询参数:', mySearchParams)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = await listMyAppVoByPage(mySearchParams)
+    console.log('我的应用API返回结果:', res)
     if (res) {
       myAppList.value = res.records || []
       myAppTotal.value = res.totalRow || 0
+      console.log('我的应用列表数据:', myAppList.value)
     }
   } catch (e) {
-    console.error(e)
+    console.error('加载我的应用失败:', e)
+    message.error('加载我的应用失败，请检查网络连接')
   } finally {
     loadingMy.value = false
   }
@@ -295,19 +305,23 @@ const onMyPageChange = (p: number) => {
 const loadingFeatured = ref(false)
 const featuredAppList = ref<API.AppVO[]>([])
 const featuredAppTotal = ref(0)
-const featuredSearchParams = reactive<API.AppQueryRequest>({ pageNum: 1, pageSize: 8, appName: '' })
+const featuredSearchParams = reactive<API.AppQueryRequest>({ pageNum: 1, pageSize: 8, appName: '', priority: 99 })
 
 const loadFeaturedApps = async () => {
   loadingFeatured.value = true
   try {
+    console.log('正在加载精选应用，查询参数:', featuredSearchParams)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = await listAppVoByPage(featuredSearchParams)
+    console.log('精选应用API返回结果:', res)
     if (res) {
       featuredAppList.value = res.records || []
       featuredAppTotal.value = res.totalRow || 0
+      console.log('精选应用列表数据:', featuredAppList.value)
     }
   } catch (e) {
-    console.error(e)
+    console.error('加载精选应用失败:', e)
+    message.error('加载精选应用失败，请检查网络连接')
   } finally {
     loadingFeatured.value = false
   }
@@ -331,6 +345,20 @@ const goGen = (id?: number) => {
 const goEdit = (id?: number) => {
   if (id) router.push(`/app/edit/${id}`)
 }
+
+// 打开精选应用的部署地址
+const openFeaturedApp = (item: API.AppVO) => {
+  if (item.deployKey) {
+    // 直接使用deployKey作为部署地址
+    // 假设deployKey是完整的URL或可以直接访问的路径
+    const deployUrl = item.deployKey
+    window.open(deployUrl, '_blank')
+  } else {
+    // 如果没有部署key，跳转到生成页面
+    goGen(item.id)
+  }
+}
+
 const onDeleteMy = async (id?: number) => {
   if (!id) return
   try {
@@ -637,6 +665,17 @@ onMounted(() => {
   color: var(--c-accent);
 }
 
+/* 移除搜索框输入元素的边框 */
+.atz-header :deep(.ant-input) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.atz-header :deep(.ant-input:focus) {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 /* ── App Grid ── */
 .app-grid {
   display: grid;
@@ -799,6 +838,17 @@ onMounted(() => {
 
 .page-nav {
   margin-top: 32px;
+  text-align: center;
+}
+
+.debug-info {
+  margin-top: 16px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(79, 110, 242, 0.3);
+  border-radius: 8px;
+  color: var(--c-text-3);
+  font-size: 11px;
   text-align: center;
 }
 </style>

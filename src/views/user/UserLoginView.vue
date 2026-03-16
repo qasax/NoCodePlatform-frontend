@@ -139,6 +139,17 @@ const handleLogin = async (values: API.UserLoginRequest) => {
   box-shadow: 0 0 0 3px rgba(79, 110, 242, 0.12) !important;
 }
 
+/* 移除内层输入框的边框，只保留外层包裹器边框 */
+.ac-form :deep(.ant-input) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.ac-form :deep(.ant-input:focus) {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .ac-submit {
   width: 100%;
   padding: 13px;

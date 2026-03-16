@@ -234,28 +234,22 @@ const handleLogout = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 16px 6px 10px;
-  border-radius: var(--r-full);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow:
-    0 1px 0 rgba(79, 110, 242, 0.08),
-    0 2px 8px rgba(79, 110, 242, 0.04);
+  padding: 6px 12px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-text-2);
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--c-text-3);
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
   user-select: none;
   height: 36px;
 }
 
 .h-user:hover {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow:
-    0 1px 0 rgba(79, 110, 242, 0.12),
-    0 4px 12px rgba(79, 110, 242, 0.08);
-  transform: translateY(-1px);
+  color: var(--c-primary);
+  background: var(--c-primary-soft);
+  border-color: rgba(79, 110, 242, 0.18);
 }
 
 .h-username {

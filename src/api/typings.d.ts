@@ -56,6 +56,8 @@ declare namespace API {
     codeGenType?: string
     /** 创建用户 ID（精确匹配） */
     userId?: number
+    /** 优先级（用于精选应用筛选，99为精选应用） */
+    priority?: number
   }
 
   type AppUpdateRequest = {

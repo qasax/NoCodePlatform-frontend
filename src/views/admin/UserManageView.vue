@@ -332,4 +332,24 @@ onMounted(() => {
 .danger-text {
   color: #ff4d4f;
 }
+
+/* 移除输入框内层边框，只保留外层包裹器边框 */
+.user-manage-container :deep(.ant-input-affix-wrapper .ant-input) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.user-manage-container :deep(.ant-input-affix-wrapper .ant-input:focus) {
+  border: none !important;
+  box-shadow: none !important;
+}
+.user-manage-container :deep(.ant-input) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.user-manage-container :deep(.ant-input:focus) {
+  border: none !important;
+  box-shadow: none !important;
+}
 </style>
